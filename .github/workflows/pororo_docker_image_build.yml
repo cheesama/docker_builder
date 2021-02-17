@@ -16,7 +16,7 @@ on:
 env:
   IMAGE_NAME: pororo_docker_image
   # Strip git ref prefix from version
-  VERSION: $(date '+%Y-%m-%d')
+  VERSION: ${date '+%Y-%m-%d'}
   DOCKERFILE_NAME: Dockerfile_pororo
 
 jobs:
