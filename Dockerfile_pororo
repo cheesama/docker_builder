@@ -16,7 +16,8 @@ RUN pip install pororo jupyter-tensorboard
 RUN jupyter labextension install jupyterlab_tensorboard jupyterlab-system-monitor
 
 #load pre-trained model in pororo
-RUN python "from pororo import Pororo; ner=Pororo(task='ner', lang='ko'); sts=Pororo(task='similarity', lang='ko'); se=Pororo(task='sentence_embedding', lang='ko');"
+RUN python -c "from pororo import Pororo; ner=Pororo(task='ner', lang='ko'); sts=Pororo(task='similarity', lang='ko'); se=Pororo(task='sentence_embedding', lang='ko');"
+RUN python -c "from pororo import Pororo; sa=Pororo(task='sentiment', model='brainbert.base.ko.shopping', lang='ko');"
 
 EXPOSE 8888 8080
 
