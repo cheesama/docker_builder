@@ -16,7 +16,7 @@ on:
 env:
   IMAGE_NAME: pororo_docker_image
   # Strip git ref prefix from version
-  VERSION: ${date '+%Y-%m-%d'}
+  VERSION: ${{ date '+%Y-%m-%d' }}
   DOCKERFILE_NAME: Dockerfile_pororo
 
 jobs:
@@ -30,16 +30,16 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build image
-        run: docker build . --file $DOCKERFILE_NAME --tag $IMAGE_NAME
+        run: docker build . --file ${{ env.DOCKERFILE_NAME }} --tag ${{ env.IMAGE_NAME }}:${{ env.VERSION }}
 
       - name: Save image as file
         run: |
-          docker save -o $IMAGE_NAME.tar $IMAGE_NAME
+          docker save -o ${{ env.IMAGE_NAME }}:${{ env.VERSION }}.tar ${{ env.IMAGE_NAME }}:${{ env.VERSION }}
           pwd && ls
           
       - name: upload image file to artifact
         uses: actions/upload-artifact@v2
         with:
-          name: $IMAGE_NAME_$VERSION.tar
-          path: ./$IMAGE_NAME.tar
+          name: ${{ env.IMAGE_NAME }}:${{ env.VERSION }}.tar
+          path: ./${{ env.IMAGE_NAME }}:${{ env.VERSION }}.tar
           if-no-files-found: error
