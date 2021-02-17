@@ -34,7 +34,7 @@ jobs:
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
 
-      - name: Push image
+      - name: Push image & Save image as file
         run: |
           IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
 
@@ -55,13 +55,10 @@ jobs:
 
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
-          
-      - name: save docker image as file
-        run: |
-          docker save -o $IMAGE_ID_$VERSION.tar $IMAGE_ID:$VERSION 
+          docker save -o $IMAGE_NAME_$VERSION.tar $IMAGE_NAME
           
       - name: upload image file to artifact
         uses: actions/upload-artifact@v2
         with:
-          name: $IMAGE_ID_$VERSION.tar
-          path: $IMAGE_ID_$VERSION.tar
+          name: $IMAGE_NAME_$VERSION.tar
+          path: $IMAGE_NAME_$VERSION.tar
