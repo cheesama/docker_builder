@@ -4,7 +4,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
 RUN buildDeps='gcc libc6-dev make build-essential' \
     && apt-get update && apt-get install -y $buildDeps git wget tar \
     && pip install --upgrade pip 
-    
+
+RUN pip install tornado
 RUN pip install pororo jupyter-tensorboard jupyterlab jupyterlab-system-monitor
 RUN jupyter labextension install jupyterlab_tensorboard
 
