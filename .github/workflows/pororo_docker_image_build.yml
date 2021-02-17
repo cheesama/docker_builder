@@ -16,7 +16,7 @@ on:
 env:
   IMAGE_NAME: pororo_docker_image
   # Strip git ref prefix from version
-  VERSION: $(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+  VERSION: $(date '+%Y-%m-%d')
   DOCKERFILE_NAME: Dockerfile_pororo
 
 jobs:
@@ -41,9 +41,6 @@ jobs:
 
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-
-          # Strip "v" prefix from tag name
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
 
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
