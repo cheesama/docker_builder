@@ -15,6 +15,9 @@ RUN pip install jupyterlab==2.2.9
 RUN pip install pororo jupyter-tensorboard
 RUN jupyter labextension install jupyterlab_tensorboard jupyterlab-system-monitor
 
+#load pre-trained model in pororo
+RUN python "from pororo import Pororo; ner=Pororo(task='ner', lang='ko'); sts=Pororo(task='similarity', lang='ko'); se=Pororo(task='sentence_embedding', lang='ko');"
+
 EXPOSE 8888 8080
 
 CMD ["sh","-c", "jupyter lab --ip=0.0.0.0 --allow-root --port=8888 --NotebookApp.token='' --NotebookApp.password='' --NotebookApp.allow_origin='*'"]
