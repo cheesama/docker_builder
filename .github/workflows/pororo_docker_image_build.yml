@@ -55,7 +55,7 @@ jobs:
 
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
-          docker save -o $IMAGE_NAME_$VERSION.tar $IMAGE_NAME
+          docker save -o $IMAGE_NAME:$VERSION.tar $IMAGE_NAME
           pwd && ls
           
       - name: upload image file to artifact
