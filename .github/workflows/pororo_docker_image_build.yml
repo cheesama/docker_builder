@@ -22,7 +22,7 @@ env:
 jobs:
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
-  image_build:
+  image_build_save:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
 
@@ -32,10 +32,7 @@ jobs:
       - name: Build image
         run: docker build . --file $DOCKERFILE_NAME --tag $IMAGE_NAME
 
-      - name: Log into registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-
-      - name: Push image & Save image as file
+      - name: Save image as file
         run: |
           IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
 
