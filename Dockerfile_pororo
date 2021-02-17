@@ -10,7 +10,7 @@ RUN apt-get -y install nodejs
 RUN npm install
 
 RUN pip install tornado
-RUN pip install jupyterlab<3.0.0
+RUN pip install jupyterlab==2.2.9
 RUN pip install pororo jupyter-tensorboard
 RUN jupyter labextension install jupyterlab_tensorboard jupyterlab-system-monitor
 
