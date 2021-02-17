@@ -34,12 +34,12 @@ jobs:
 
       - name: Save image as file
         run: |
-          docker save -o $IMAGE_NAME:$VERSION.tar $IMAGE_NAME
+          docker save -o $IMAGE_NAME.tar $IMAGE_NAME
           pwd && ls
           
       - name: upload image file to artifact
         uses: actions/upload-artifact@v2
         with:
           name: $IMAGE_NAME_$VERSION.tar
-          path: ./$IMAGE_NAME:$VERSION.tar
+          path: ./$IMAGE_NAME.tar
           if-no-files-found: error
