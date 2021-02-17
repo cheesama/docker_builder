@@ -62,5 +62,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: $IMAGE_NAME_$VERSION.tar
-          path: ./$IMAGE_NAME_$VERSION.tar
+          path: ./$IMAGE_NAME:$VERSION.tar
           if-no-files-found: error
