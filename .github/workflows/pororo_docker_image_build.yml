@@ -58,7 +58,7 @@ jobs:
           
       - name: save docker image as file
         run: |
-          docker save $IMAGE_ID:$VERSION -o $IMAGE_ID_$VERSION.tar
+          docker save $IMAGE_ID:$VERSION > $IMAGE_ID_$VERSION.tar
           
       - name: upload image file to artifact
         uses: actions/upload-artifact@v2
