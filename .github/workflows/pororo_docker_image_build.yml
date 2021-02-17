@@ -63,5 +63,5 @@ jobs:
       - name: upload image file to artifact
         uses: actions/upload-artifact@v2
         with:
-          name: $IMAGE_ID:$VERSION
-          path: images/$IMAGE_ID_$VERSION.tar
+          name: $IMAGE_ID_$VERSION.tar
+          path: $IMAGE_ID_$VERSION.tar
