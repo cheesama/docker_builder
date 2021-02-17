@@ -10,9 +10,9 @@ RUN curl -fsSL https://code-server.dev/install.sh | sh
 RUN apt-get -y install nodejs
 RUN npm install
 
-RUN pip install tornado pytorch-lightning pandas scikit-learn
+RUN pip install tornado pytorch-lightning pandas scikit-learn 
 RUN pip install jupyterlab==2.2.9
-RUN pip install pororo jupyter-tensorboard
+RUN pip install pororo jupyter-tensorboard papermill
 RUN jupyter labextension install jupyterlab_tensorboard jupyterlab-system-monitor
 
 #load pre-trained model in pororo
