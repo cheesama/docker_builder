@@ -9,7 +9,7 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x  | bash -
 RUN apt-get -y install nodejs
 RUN npm install
 
-RUN pip install tornado pytorch-lightning pandas scikit-learn 
+RUN pip install tornado pytorch-lightning pandas scikit-learn streamlit
 RUN pip install jupyterlab==2.2.9
 RUN pip install pororo jupyter-tensorboard papermill
 RUN jupyter labextension install jupyterlab_tensorboard jupyterlab-system-monitor
@@ -19,6 +19,6 @@ RUN python -c "from pororo import Pororo; ner=Pororo(task='ner', lang='ko'); sts
 RUN python -c "from pororo import Pororo; sa=Pororo(task='sentiment', model='brainbert.base.ko.shopping', lang='ko');"
 RUN python -c "from pororo import Pororo; summ=Pororo(task='summarization', model='abstractive', lang='ko'); summ=Pororo(task='summarization', model='bullet', lang='ko'); summ=Pororo(task='summarization', model='extractive', lang='ko');"
 
-EXPOSE 8888 8080
+EXPOSE 8888 8080 6006
 
 CMD ["sh","-c", "jupyter lab --ip=0.0.0.0 --allow-root --port=8888 --NotebookApp.token='' --NotebookApp.password='' --NotebookApp.allow_origin='*'"]
