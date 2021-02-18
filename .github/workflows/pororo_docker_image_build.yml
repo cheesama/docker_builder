@@ -34,7 +34,7 @@ jobs:
 
       - name: Save image as file
         run: |
-          docker save -o ${{ env.IMAGE_NAME }}:${{ env.VERSION }}.tar ${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+          docker save ${{ env.IMAGE_NAME }}:${{ env.VERSION }} > ${{ env.IMAGE_NAME }}:${{ env.VERSION }}.tar 
           pwd && ls
           
       - name: upload image file to artifact
