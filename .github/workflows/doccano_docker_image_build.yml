@@ -1,0 +1,45 @@
+name: doccano_docker_image_build
+
+on:
+  push:
+    # Publish `main` as Docker `latest` image.
+    branches:
+      - main
+
+    # Publish `v1.2.3` tags as releases.
+    tags:
+      - v*
+
+  # Run tests for any PRs.
+  pull_request:
+
+env:
+  IMAGE_NAME: doccano_docker_image
+  # Strip git ref prefix from version
+  VERSION: $( date '+%Y-%m-%d' )
+  DOCKERFILE_NAME: Dockerfile_doccano
+
+jobs:
+  # Push image to GitHub Packages.
+  # See also https://docs.docker.com/docker-hub/builds/
+  image_build_save:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: docker build . --file ${{ env.DOCKERFILE_NAME }} --tag ${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+
+      - name: Save image as file
+        run: |
+          docker save ${{ env.IMAGE_NAME }}:${{ env.VERSION }} > ${{ env.IMAGE_NAME }}:${{ env.VERSION }}.tar 
+          pwd && ls
+          
+      - name: upload image file to artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.IMAGE_NAME }}:${{ env.VERSION }}.tar
+          path: ./${{ env.IMAGE_NAME }}:${{ env.VERSION }}.tar
+          if-no-files-found: error
