@@ -2,13 +2,13 @@ name: pororo_docker_image_build
 
 on:
   push:
-    # Publish `main` as Docker `latest` image.
     branches:
       - main
-
-    # Publish `v1.2.3` tags as releases.
     tags:
       - v*
+    paths:
+      - '.github/workflows/pororo_docker_image_build.yml'
+      - 'Dockerfile_pororo'
 
   # Run tests for any PRs.
   pull_request:
@@ -34,7 +34,7 @@ jobs:
 
       - name: Save image as file
         run: |
-          docker save ${{ env.IMAGE_NAME }}:${{ env.VERSION }} > ${{ env.IMAGE_NAME }}:${{ env.VERSION }}.tar 
+          docker save ${{ env.IMAGE_NAME }}:${{ env.VERSION }} > ${{ env.IMAGE_NAME }}_${{ env.VERSION }}.tar 
           pwd && ls
           echo "::set-output name=TAG_NAME::$( date '+%Y-%m-%d' )"
         id: version
@@ -43,5 +43,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.IMAGE_NAME }}_${{ steps.version.outputs.TAG_NAME }}.tar
-          path: ./${{ env.IMAGE_NAME }}:${{ steps.version.outputs.TAG_NAME }}.tar
+          path: ./${{ env.IMAGE_NAME }}_${{ steps.version.outputs.TAG_NAME }}.tar
           if-no-files-found: error
