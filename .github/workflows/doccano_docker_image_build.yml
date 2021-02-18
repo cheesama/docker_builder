@@ -37,10 +37,12 @@ jobs:
         run: |
           docker save ${{ env.IMAGE_NAME }}:${{ env.VERSION }} > ${{ env.IMAGE_NAME }}:${{ env.VERSION }}.tar 
           pwd && ls
+          echo "::set-output name=TAG_NAME::$( date '+%Y-%m-%d' )"
+        id: version
           
       - name: upload image file to artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ env.IMAGE_NAME }}:${{ env.VERSION }}.tar
-          path: ./${{ env.IMAGE_NAME }}:${{ env.VERSION }}.tar
+          name: ${{ env.IMAGE_NAME }}:${{ steps.version.outputs.TAG_NAME }}.tar
+          path: ./${{ env.IMAGE_NAME }}:${{ steps.version.outputs.TAG_NAME }}.tar
           if-no-files-found: error
