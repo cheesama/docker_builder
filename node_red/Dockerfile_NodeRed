@@ -12,10 +12,15 @@ RUN buildDeps='gcc libc6-dev make' \
     && curl -sL https://deb.nodesource.com/setup_12.x | bash - \
     && apt-get install -y nodejs \
     && pip3 install --upgrade pip && pip3 install --ignore-installed PyYAML \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get purge -y --auto-remove $buildDeps
+    && rm -rf /var/lib/apt/lists/* 
+
+RUN apt-get update && apt-get install -y libkrb5-dev
 
 ENV SHELL /bin/bash
+
+RUN pip3 install sqlalchemy pandas-profiling cx_Oracle
+RUN pip3 install phoenixdb
+RUN pip3 install hdfs
 
 #install node-red & contrib packages
 RUN npm install -g --unsafe-perm node-red@1.1.0
