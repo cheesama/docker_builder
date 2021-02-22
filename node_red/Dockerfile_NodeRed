@@ -1,0 +1,41 @@
+FROM python:3.8.5-slim
+
+USER root
+
+# change apt source list to kakao
+RUN sed -i 's#http://archive.ubuntu.com/ubuntu/#http://mirror.kakao.com/ubuntu/#g' /etc/apt/sources.list
+RUN sed -i 's#http://security.ubuntu.com/ubuntu/#http://mirror.kakao.com/ubuntu/#g' /etc/apt/sources.list
+
+RUN buildDeps='gcc libc6-dev make' \
+    && apt-get update && apt-get install -y $buildDeps git wget tar vim \
+    && apt-get install -y --no-install-recommends ca-certificates bash-completion byobu git-core dpkg curl gnupg \
+    && curl -sL https://deb.nodesource.com/setup_12.x | bash - \
+    && apt-get install -y nodejs \
+    && pip3 install --upgrade pip && pip3 install --ignore-installed PyYAML \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get purge -y --auto-remove $buildDeps
+
+ENV SHELL /bin/bash
+
+#install node-red & contrib packages
+RUN npm install -g --unsafe-perm node-red@1.1.0
+RUN npm install -g node-red-contrib-python-function node-red-contrib-loop-processing body-parser node-red-contrib-mongodb3 node-red-contrib-slack node-red-contrib-slack-files node-red-contrib-redis
+RUN npm install -g node-red-contrib-flow-manager
+RUN npm install -g --production node-red-contrib-cache
+EXPOSE 1880
+
+#add internal javascript dependency modules
+RUN npm install sync-request applicationinsights url-join slack-node
+
+#set python3 as default python version
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 0
+
+WORKDIR /workspace/
+COPY settings.js /workspace/settings.js
+RUN mkdir -p /root/.node-red/envnodes
+
+#set time-zone as Asia/Seoul
+ENV TZ=Asia/Seoul
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+CMD ["node-red", "-v", "--settings", "settings.js", "--flowFile", "flows.json", "userDir", "."]
