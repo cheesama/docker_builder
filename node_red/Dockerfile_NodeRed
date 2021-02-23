@@ -18,13 +18,13 @@ RUN apt-get update && apt-get install -y libkrb5-dev
 
 ENV SHELL /bin/bash
 
-RUN pip3 install sqlalchemy pandas-profiling cx_Oracle
+RUN pip3 install sqlalchemy pandas-profiling cx_Oracle boto3
 RUN pip3 install phoenixdb
 RUN pip3 install hdfs
 
 #install node-red & contrib packages
 RUN npm install -g --unsafe-perm node-red@1.1.0
-RUN npm install -g node-red-contrib-python-function node-red-contrib-loop-processing body-parser node-red-contrib-mongodb3 node-red-contrib-slack node-red-contrib-slack-files node-red-contrib-redis
+RUN npm install -g node-red-contrib-python-function node-red-contrib-loop-processing body-parser node-red-contrib-mongodb3 node-red-contrib-slack node-red-contrib-slack-files node-red-contrib-redis node-red-dashboard
 RUN npm install -g node-red-contrib-flow-manager
 RUN npm install -g --production node-red-contrib-cache
 EXPOSE 1880

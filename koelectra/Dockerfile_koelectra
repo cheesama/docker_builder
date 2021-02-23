@@ -11,13 +11,12 @@ RUN npm install
 
 RUN pip install tornado pytorch-lightning pandas scikit-learn streamlit boto3
 RUN pip install jupyterlab==2.2.9
-RUN pip install pororo jupyter-tensorboard papermill
+RUN pip install transformers jupyter-tensorboard papermill
 RUN jupyter labextension install jupyterlab_tensorboard jupyterlab-system-monitor
 
-#load pre-trained model in pororo
-RUN python -c "from pororo import Pororo; ner=Pororo(task='ner', lang='ko'); sts=Pororo(task='similarity', lang='ko'); se=Pororo(task='sentence_embedding', lang='ko');"
-RUN python -c "from pororo import Pororo; sa=Pororo(task='sentiment', model='brainbert.base.ko.shopping', lang='ko');"
-RUN python -c "from pororo import Pororo; summ=Pororo(task='summarization', model='abstractive', lang='ko'); summ=Pororo(task='summarization', model='bullet', lang='ko'); summ=Pororo(task='summarization', model='extractive', lang='ko');"
+#load pre-trained model in koelectra(based on small model)
+RUN python -c "from transformers import ElectraModel, ElectraTokenizer; model = ElectraModel.from_pretrained('monologg/koelectra-small-v3-discriminator'); tokenizer = ElectraTokenizer.from_pretrained('monologg/koelectra-small-v3-discriminator');"
+RUN python -c "from transformers import ElectraModel, ElectraTokenizer; model = ElectraModel.from_pretrained('monologg/koelectra-base-v3-discriminator'); tokenizer = ElectraTokenizer.from_pretrained('monologg/koelectra-base-v3-discriminator');"
 
 EXPOSE 8888 8080 6006
 
