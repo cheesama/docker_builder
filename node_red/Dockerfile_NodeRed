@@ -7,7 +7,7 @@ RUN sed -i 's#http://archive.ubuntu.com/ubuntu/#http://mirror.kakao.com/ubuntu/#
 RUN sed -i 's#http://security.ubuntu.com/ubuntu/#http://mirror.kakao.com/ubuntu/#g' /etc/apt/sources.list
 
 RUN buildDeps='gcc libc6-dev make' \
-    && apt-get update && apt-get install -y $buildDeps git wget tar vim \
+    && apt-get update && apt-get install -y $buildDeps git wget tar vim unzip libaio1 \
     && apt-get install -y --no-install-recommends ca-certificates bash-completion byobu git-core dpkg curl gnupg \
     && curl -sL https://deb.nodesource.com/setup_12.x | bash - \
     && apt-get install -y nodejs \
@@ -42,5 +42,15 @@ RUN mkdir -p /root/.node-red/envnodes
 #set time-zone as Asia/Seoul
 ENV TZ=Asia/Seoul
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+#spcify oracle jdbc connector
+RUN mkdir -p /opt/oracle && cd /opt/oracle && wget https://download.oracle.com/otn_software/linux/instantclient/191000/instantclient-basic-linux.x64-19.10.0.0.0dbru.zip \
+ && unzip instantclient-basic-linux.x64-19.10.0.0.0dbru.zip \
+ && cd /opt/oracle/instantclient_19_10 
+# && ln -s libclntsh.so.12.1 libclntsh.so \
+# && ln -s libocci.so.12.1 libocci.so
+RUN sh -c "echo /opt/oracle/instantclient_19_10 > /etc/ld.so.conf.d/oracle-instantclient.conf" && ldconfig
+RUN export LD_LIBRARY_PATH=/opt/oracle/instantclient_19_10:$LD_LIBRARY_PATH
+RUN export PATH=/opt/oracle/instantclient_19_10:$PATH
 
 CMD ["node-red", "-v", "--settings", "settings.js", "--flowFile", "flows.json", "userDir", "."]
