@@ -1,7 +1,7 @@
 FROM pytorch/pytorch:1.6.0-cuda10.1-cudnn7-runtime
 
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
-RUN buildDeps='gcc libc6-dev make build-essential curl gnupg' \
+RUN buildDeps='wget gcc libc6-dev make build-essential curl gnupg git-lfs' \
     && apt-get update && apt-get install -y $buildDeps git wget tar \
     && pip install --upgrade pip 
     
@@ -13,10 +13,12 @@ RUN pip install tornado pytorch-lightning pandas scikit-learn streamlit boto3
 RUN pip install jupyterlab==2.2.9
 RUN pip install transformers jupyter-tensorboard papermill
 RUN jupyter labextension install jupyterlab_tensorboard jupyterlab-system-monitor
+RUN pip install --upgrade "elyra>=2.0.1" && jupyter lab build
 
-#load pre-trained model in koelectra(based on small model)
-RUN python -c "from transformers import ElectraModel, ElectraTokenizer; model = ElectraModel.from_pretrained('monologg/koelectra-small-v3-discriminator'); tokenizer = ElectraTokenizer.from_pretrained('monologg/koelectra-small-v3-discriminator');"
-RUN python -c "from transformers import ElectraModel, ElectraTokenizer; model = ElectraModel.from_pretrained('monologg/koelectra-base-v3-discriminator'); tokenizer = ElectraTokenizer.from_pretrained('monologg/koelectra-base-v3-discriminator');"
+#load pre-trained model in koelectra
+RUN git lfs install
+RUN git clone https://huggingface.co/monologg/koelectra-small-v3-discriminator
+RUN git clone https://huggingface.co/monologg/koelectra-base-v3-discriminator
 
 EXPOSE 8888 8080 6006
 
