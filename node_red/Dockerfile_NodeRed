@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y libkrb5-dev
 
 ENV SHELL /bin/bash
 
-RUN pip3 install sqlalchemy pandas-profiling cx_Oracle boto3
+RUN pip3 install sqlalchemy pandas-profiling cx_Oracle boto3 pyathena
 RUN pip3 install phoenixdb
 RUN pip3 install hdfs
 
