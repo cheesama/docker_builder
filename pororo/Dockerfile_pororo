@@ -9,15 +9,31 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x  | bash -
 RUN apt-get -y install nodejs
 RUN npm install
 
-RUN pip install tornado pytorch-lightning pandas scikit-learn streamlit boto3 gensim
+RUN pip install tornado pytorch-lightning pandas scikit-learn streamlit boto3 gensim librosa soundfile torchaudio cx_Oracle
 RUN pip install jupyterlab==2.2.9
 RUN pip install pororo jupyter-tensorboard papermill
 RUN jupyter labextension install jupyterlab_tensorboard jupyterlab-system-monitor
 
-#load pre-trained model in pororo
+#download pororo ner model
 RUN python -c "from pororo import Pororo; ner=Pororo(task='ner', lang='ko'); sts=Pororo(task='similarity', lang='ko'); se=Pororo(task='sentence_embedding', lang='ko');"
+
+#download pororo sentiment model
 RUN python -c "from pororo import Pororo; sa=Pororo(task='sentiment', model='brainbert.base.ko.shopping', lang='ko');"
+
+#download pororo summarization model
 RUN python -c "from pororo import Pororo; summ=Pororo(task='summarization', model='abstractive', lang='ko'); summ=Pororo(task='summarization', model='bullet', lang='ko'); summ=Pororo(task='summarization', model='extractive', lang='ko');"
+
+#download pororo sentence_embedding model
+RUN python -c "from pororo import Pororo; se=Pororo(task='sentence_embedding', lang='ko');"
+
+#download pororo zero-shot topic model
+RUN python -c "from pororo import Pororo; zsl=Pororo(task='zero-topic', lang='ko');"
+
+#download pororo grammar error correction(spacing) model
+RUN python -c "from pororo import Pororo; gec=Pororo(task='gec', lang='ko');"
+
+#download pororo ASR model
+RUN python -c "from pororo import Pororo; asr=Pororo(task='asr', lang='ko');"
 
 EXPOSE 8888 8080 6006
 
