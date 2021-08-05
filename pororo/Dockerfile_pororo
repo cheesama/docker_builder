@@ -9,7 +9,7 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x  | bash -
 RUN apt-get -y install nodejs
 RUN npm install
 
-RUN pip install tornado pytorch-lightning pandas scikit-learn streamlit boto3 gensim librosa soundfile torchaudio cx_Oracle
+RUN pip install tornado pytorch-lightning pandas scikit-learn streamlit boto3 gensim librosa soundfile torchaudio fastapi
 RUN pip install jupyterlab==2.2.9
 RUN pip install pororo jupyter-tensorboard papermill
 RUN jupyter labextension install jupyterlab_tensorboard jupyterlab-system-monitor
